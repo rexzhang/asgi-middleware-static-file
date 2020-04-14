@@ -1,6 +1,6 @@
 name: ASGI Middleware Static File
 
-on: [push]
+on:
   tags:
     - 'v*'
 
