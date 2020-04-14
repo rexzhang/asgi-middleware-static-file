@@ -54,7 +54,7 @@ Update ``asgi.py``
 
 Do't forget execute ``python manage.py collectstatic``
 
-try it
+Run server
 
 .. code-block:: console
 
