@@ -1,9 +1,7 @@
-name: ASGI Middleware Static File
+name: Publish package to PyPI
 
 on:
   push:
-    branches:
-      - master
     tags:
       - 'v*'
 
