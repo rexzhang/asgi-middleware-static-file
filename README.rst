@@ -59,6 +59,12 @@ try it
 .. code-block:: console
 
     daphne dj_project.asgi:application -b 0.0.0.0
+    2020-04-14 17:20:57,530 INFO     Starting server at tcp:port=8000:interface=0.0.0.0
+    2020-04-14 17:20:57,531 INFO     HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+    2020-04-14 17:20:57,531 INFO     Configuring endpoint tcp:port=8000:interface=0.0.0.0
+    2020-04-14 17:20:57,532 INFO     Listening on TCP address 0.0.0.0:8000
+    127.0.0.1:62601 - - [14/Apr/2020:17:21:08] "GET /static/css/emo.css" 200 1692
+
 
 
 Alternative

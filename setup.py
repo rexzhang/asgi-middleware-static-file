@@ -63,7 +63,7 @@ setup(
     # What does your project relate to?
     keywords='asgi middleware staticfile',
 
-    py_modules=['tree_struct_config'],
+    py_modules=['asgi_middleware_static_file'],
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
 
     # List run-time dependencies here.  These will be installed by pip when your
