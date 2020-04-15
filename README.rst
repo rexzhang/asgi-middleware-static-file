@@ -2,7 +2,23 @@
 ASGIMiddlewareStaticFile
 ========================
 
+
+.. image:: https://img.shields.io/pypi/v/ASGIMiddlewareStaticFile.svg
+    :target: https://pypi.org/project/ASGIMiddlewareStaticFile/
+.. image:: https://img.shields.io/pypi/pyversions/ASGIMiddlewareStaticFile.svg
+    :target: https://pypi.org/project/ASGIMiddlewareStaticFile/
+.. image:: https://img.shields.io/pypi/dm/ASGIMiddlewareStaticFile.svg
+    :target: https://pypi.org/project/ASGIMiddlewareStaticFile/
+
 ASGI Middleware for serving Static File.
+
+
+Install
+=======
+
+.. code-block:: console
+
+    pip3 install -U ASGIMiddlewareStaticFile
 
 
 Usage
@@ -70,5 +86,8 @@ Run server
 Alternative
 ===========
 
-- django.contrib.staticfiles.handlers.ASGIStaticFilesHandler
-- https://github.com/kobinpy/wsgi-static-middleware only work with WSGI
+- ASGI Middleware
+    - django.contrib.staticfiles.handlers.ASGIStaticFilesHandler
+- WSGI Middleware
+    - https://github.com/kobinpy/wsgi-static-middleware
+    - https://pypi.org/project/whitenoise/
