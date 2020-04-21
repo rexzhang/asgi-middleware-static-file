@@ -5,6 +5,12 @@
 import os
 import mimetypes
 from datetime import datetime
+from hashlib import md5
+
+import aiofiles
+from aiofiles.os import stat as aio_stat
+
+_FILE_BLOCK_SIZE = 64 * 1024
 
 
 class ASGIMiddlewareStaticFile:
@@ -49,17 +55,18 @@ class ASGIMiddlewareStaticFile:
             encoding = bytes(encoding, encoding='utf-8')
         else:
             encoding = b''
-        content_length = os.path.getsize(absolute_path_file_name)
-        last_modified = bytes(
-            datetime.fromtimestamp(os.path.getmtime(absolute_path_file_name)).strftime('%a, %d %b %Y %H:%M:%S GMT'),
-            encoding='utf-8'
-        )
+        stat_result = await aio_stat(absolute_path_file_name)
+        file_size = bytes(str(stat_result.st_size), encoding='utf-8')
+        last_modified = bytes(datetime.fromtimestamp(stat_result.st_mtime).strftime(
+            '%a, %d %b %Y %H:%M:%S GMT'
+        ), encoding='utf-8')
         headers = [
             (b'Content-Encodings', encoding),
             (b'Content-Type', content_type),
-            (b'Content-Length', bytes(str(content_length), encoding='utf-8')),
-            (b'Last-Modified', last_modified),
+            (b'Content-Length', file_size),
             (b'Accept-Ranges', b'bytes'),
+            (b'Last-Modified', last_modified),
+            (b'ETag', md5(file_size + last_modified).hexdigest().encode('utf-8')),
         ]
 
         # send headers
@@ -69,15 +76,26 @@ class ASGIMiddlewareStaticFile:
             'headers': headers,
         })
         if is_head:
+            await send({
+                'type': 'http.response.body',
+            })
+
             return
 
         # send file
-        with open(absolute_path_file_name, mode='rb') as f:
-            data = f.read(16 * 1024)
-            await send({
-                'type': 'http.response.body',
-                'body': data,
-            })
+        async with aiofiles.open(absolute_path_file_name, mode="rb") as f:
+            more_body = True
+            while more_body:
+                data = await f.read(_FILE_BLOCK_SIZE)
+                more_body = len(data) == _FILE_BLOCK_SIZE
+                await send(
+                    {
+                        "type": "http.response.body",
+                        "body": data,
+                        "more_body": more_body,
+                    }
+                )
+
         return
 
     @staticmethod
