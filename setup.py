@@ -17,6 +17,33 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
+
+# Get install_requires from requirements.txt
+def _read_install_requires_from_requirements_txt(base_path, filename):
+    _install_requires = []
+    with open(path.join(base_path, filename), encoding='utf-8') as req_f:
+        lines = req_f.readlines()
+        for line in lines:
+            if line == '' or line[0] == '#':
+                continue
+
+            words = line.rstrip('\n').split(' ')
+            if words[0] == '-r':
+                _install_requires.extend(_read_install_requires_from_requirements_txt(
+                    base_path=base_path, filename=words[1]
+                ))
+
+            else:
+                _install_requires.append(words[0])
+
+    return _install_requires
+
+
+install_requires = _read_install_requires_from_requirements_txt(
+    base_path=here, filename='requirements.txt'
+)
+
+# Setup
 setup(
     name='ASGIMiddlewareStaticFile',
 
@@ -70,7 +97,7 @@ setup(
     # project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    # install_requires=install_requires,
+    install_requires=install_requires,
 
     python_requires='>=3.5',
 
