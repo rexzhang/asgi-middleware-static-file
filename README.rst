@@ -91,3 +91,5 @@ Alternative
 - WSGI Middleware
     - https://github.com/kobinpy/wsgi-static-middleware
     - https://pypi.org/project/whitenoise/
+- View
+    - starlette.staticfiles.StaticFiles
