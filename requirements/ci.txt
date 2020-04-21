@@ -1,0 +1,6 @@
+-r common.txt
+
+pip
+setuptools
+wheel
+twine
