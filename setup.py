@@ -14,7 +14,7 @@ import asgi_middleware_static_file as module
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 
@@ -24,7 +24,7 @@ def _read_install_requires_from_requirements_txt(base_path, filename):
     with open(path.join(base_path, filename), encoding='utf-8') as req_f:
         lines = req_f.readlines()
         for line in lines:
-            if line == '' or line[0] == '#':
+            if line == '\n' or line == '' or line[0] == '#':
                 continue
 
             words = line.rstrip('\n').split(' ')
