@@ -6,6 +6,10 @@
 
 ASGI Middleware for serving static file.
 
+# Why?
+
+> ASGIMiddlewareStaticFile is a solution when we need to distribute the whole project with static files in Docker; when the deployment environment has very limited resources.
+
 # Install
 
 ```shell
@@ -149,6 +153,7 @@ INFO:     127.0.0.1:56212 - "GET /static/DEMO HTTP/1.1" 200 OK
 ```
 
 ### Run wget
+
 ```shell
 (venv) ➜  asgi-middleware-static-file git:(master) ✗ wget http://127.0.0.1:8000/static/DEMO
 --2021-01-11 20:17:46--  http://127.0.0.1:8000/static/DEMO
