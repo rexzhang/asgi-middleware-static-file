@@ -74,7 +74,7 @@ DEMO.6                        100%[=============================================
 2021-01-11 19:54:24 (540 KB/s) - 已保存 “DEMO.6” [26/26])
 ```
 
-## Django
+## [Django](https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/)
 
 Update file `asgi.py`
 
@@ -110,7 +110,7 @@ daphne dj_project.asgi:application -b 0.0.0.0
 127.0.0.1:62601 - - [14/Apr/2020:17:21:08] "GET /static/css/emo.css" 200 1692
 ```
 
-## Quart (Flask like)
+## [Quart](https://pgjones.gitlab.io/quart/tutorials/quickstart.html) (Flask like)
 
 ### Code `demo_quart.py`
 
