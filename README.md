@@ -14,7 +14,7 @@ pip3 install -U ASGIMiddlewareStaticFile
 
 # Usage
 
-## Pure ASGI
+## [Pure ASGI](https://asgi.readthedocs.io/en/latest/introduction.html)
 
 Code `demo_pure_asgi.py`
 
