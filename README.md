@@ -1,5 +1,4 @@
-ASGIMiddlewareStaticFile
-========================
+# ASGIMiddlewareStaticFile
 
 [![](https://img.shields.io/pypi/v/ASGIMiddlewareStaticFile.svg)](https://pypi.org/project/ASGIMiddlewareStaticFile/)
 [![](https://img.shields.io/pypi/pyversions/ASGIMiddlewareStaticFile.svg)](https://pypi.org/project/ASGIMiddlewareStaticFile/)
@@ -7,43 +6,79 @@ ASGIMiddlewareStaticFile
 
 ASGI Middleware for serving Static File.
 
-Install
--------
+# Install
 
 ``` {.sourceCode .console}
 pip3 install -U ASGIMiddlewareStaticFile
 ```
 
-Usage
------
+# Usage
 
-### Pure ASGI
+## Pure ASGI
 
-``` {.sourceCode .python}
+`demo_pure_asgi.py`
+
+```python
 import os
-from wsgiref.simple_server import make_server
 from asgi_middleware_static_file import ASGIMiddlewareStaticFile
 
 BASE_DIR = os.path.dirname(__name__)
 STATIC_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 
-def app(env, start_response):
-    start_response('200 OK', [('Conte-type', 'text/plain; charset=utf-8')])
-    return [b'Hello World']
+async def app(scope, receive, send):
+    assert scope['type'] == 'http'
 
-app = ASGIMiddlewareStaticFile(app, static_url='static', static_paths=STATIC_DIRS)
+    await send({
+        'type': 'http.response.start',
+        'status': 200,
+        'headers': [
+            [b'content-type', b'text/plain'],
+        ],
+    })
+    await send({
+        'type': 'http.response.body',
+        'body': b'Hello, world!',
+    })
 
-if __name__ == '__main__':
-    httpd = make_server('', 8000, app)
-    httpd.serve_forever()
+
+app = ASGIMiddlewareStaticFile(
+    app, static_url='static', static_paths=STATIC_DIRS
+)
 ```
 
-### Django
+Run Server
+
+```shell
+uvicorn demo_pure_asgi:app
+INFO:     Started server process [21061]
+INFO:     Waiting for application startup.
+INFO:     ASGI 'lifespan' protocol appears unsupported.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54529 - "GET /static/DEMO HTTP/1.1" 200 OK
+```
+
+Run wget
+
+```shell
+wget http://127.0.0.1:8000/static/DEMO
+--2021-01-11 19:54:24--  http://127.0.0.1:8000/static/DEMO
+正在连接 127.0.0.1:8000... 已连接。
+已发出 HTTP 请求，正在等待回应... 200 OK
+长度：26 []
+正在保存至: “DEMO.6”
+
+DEMO.6                        100%[==============================================>]      26  --.-KB/s  用时 0s
+
+2021-01-11 19:54:24 (540 KB/s) - 已保存 “DEMO.6” [26/26])
+```
+
+## Django
 
 Update `asgi.py`
 
-``` {.sourceCode .python}
+```python
 import os
 
 from django.conf import settings
@@ -53,15 +88,20 @@ from asgi_middleware_static_file import ASGIMiddlewareStaticFile
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dj_project.settings')
 application = get_asgi_application()
 application = ASGIMiddlewareStaticFile(
-    application, static_url=settings.STATIC_URL, static_paths=[settings.STATIC_ROOT]
+    application, static_url=settings.STATIC_URL,
+    static_paths=[settings.STATIC_ROOT]
 )
 ```
 
-Do't forget execute `python manage.py collectstatic`
+Do't forget execute
+
+```shell
+python manage.py collectstatic
+```
 
 Run server
 
-``` {.sourceCode .console}
+```shell
 daphne dj_project.asgi:application -b 0.0.0.0
 2020-04-14 17:20:57,530 INFO     Starting server at tcp:port=8000:interface=0.0.0.0
 2020-04-14 17:20:57,531 INFO     HTTP/2 support not enabled (install the http2 and tls Twisted extras)
@@ -70,17 +110,16 @@ daphne dj_project.asgi:application -b 0.0.0.0
 127.0.0.1:62601 - - [14/Apr/2020:17:21:08] "GET /static/css/emo.css" 200 1692
 ```
 
-Alternative
------------
+## Alternative
 
 - ASGI Middleware
-  :   - django.contrib.staticfiles.handlers.ASGIStaticFilesHandler
+    - django.contrib.staticfiles.handlers.ASGIStaticFilesHandler
 
 - WSGI Middleware
-  :   -   <https://github.com/kobinpy/wsgi-static-middleware>
+    - <https://github.com/kobinpy/wsgi-static-middleware>
     - <https://pypi.org/project/whitenoise/>
 
 - View
-  :   - starlette.staticfiles.StaticFiles
+    - starlette.staticfiles.StaticFiles
 
 
