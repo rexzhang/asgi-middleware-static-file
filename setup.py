@@ -29,9 +29,11 @@ def _read_install_requires_from_requirements_txt(base_path, filename):
 
             words = line.rstrip('\n').split(' ')
             if words[0] == '-r':
-                _install_requires.extend(_read_install_requires_from_requirements_txt(
-                    base_path=base_path, filename=words[1]
-                ))
+                _install_requires.extend(
+                    _read_install_requires_from_requirements_txt(
+                        base_path=base_path, filename=words[1]
+                    )
+                )
 
             else:
                 _install_requires.append(words[0])
@@ -88,7 +90,7 @@ setup(
     ],
 
     # What does your project relate to?
-    keywords='asgi middleware staticfile',
+    keywords='asgi middleware staticfile asycnio',
 
     py_modules=['asgi_middleware_static_file'],
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),

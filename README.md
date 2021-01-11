@@ -4,11 +4,11 @@
 [![](https://img.shields.io/pypi/pyversions/ASGIMiddlewareStaticFile.svg)](https://pypi.org/project/ASGIMiddlewareStaticFile/)
 [![](https://img.shields.io/pypi/dm/ASGIMiddlewareStaticFile.svg)](https://pypi.org/project/ASGIMiddlewareStaticFile/)
 
-ASGI Middleware for serving Static File.
+ASGI Middleware for serving static file.
 
 # Install
 
-``` {.sourceCode .console}
+```shell
 pip3 install -U ASGIMiddlewareStaticFile
 ```
 
@@ -76,7 +76,7 @@ DEMO.6                        100%[=============================================
 
 ## [Django](https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/)
 
-Update file `asgi.py`
+Update file `dj_project/asgi.py`
 
 ```python
 import os
