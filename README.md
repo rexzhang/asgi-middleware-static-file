@@ -10,6 +10,12 @@ ASGI Middleware for serving static file.
 
 > ASGIMiddlewareStaticFile is a solution when we need to distribute the whole project with static files in Docker; when the deployment environment has very limited resources.
 
+# Features
+
+- Standard ASGI middleware implement
+- Async file IO
+- Support ETag(base on md5(file_size + last_modified) )
+
 # Install
 
 ```shell
@@ -167,7 +173,7 @@ DEMO.7                        100%[=============================================
 2021-01-11 20:17:46 (1.46 MB/s) - 已保存 “DEMO.7” [26/26])
 ```
 
-## Alternative
+# Alternative
 
 - ASGI Middleware
     - django.contrib.staticfiles.handlers.ASGIStaticFilesHandler
@@ -179,4 +185,9 @@ DEMO.7                        100%[=============================================
 - View
     - starlette.staticfiles.StaticFiles
 
+# TODO
 
+- zero copy
+- file extension filter,
+- Etag,Cache Control
+- 404
