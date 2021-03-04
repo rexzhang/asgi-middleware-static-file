@@ -23,5 +23,5 @@ async def app(scope, receive, send):
 
 
 app = ASGIMiddlewareStaticFile(
-    app, static_url='static', static_paths=STATIC_DIRS
+    app, static_url='static', static_root_paths=STATIC_DIRS
 )

@@ -42,7 +42,7 @@ def _read_install_requires_from_requirements_txt(base_path, filename):
 
 
 install_requires = _read_install_requires_from_requirements_txt(
-    base_path=here, filename='requirements.txt'
+    base_path=here, filename='requirements/base.txt'
 )
 
 # Setup

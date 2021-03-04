@@ -2,71 +2,121 @@
 # coding=utf-8
 
 
+from typing import Optional, Union, TypeVar, List, Callable
 import os
 import mimetypes
+from sys import version_info
+from pathlib import Path as PathLibPath
 from datetime import datetime
 from hashlib import md5
 
 import aiofiles
 from aiofiles.os import stat as aio_stat
 
+if version_info.major > 3 and version_info.minor > 6:
+    from os import PathLike
+else:
+    PathLike = TypeVar('PathLike', str, bytes, PathLibPath)
+
 _FILE_BLOCK_SIZE = 64 * 1024
 
 
+class Path:
+    def __init__(self, path: Union[PathLike, 'Path']):
+        if not isinstance(path, PathLibPath):
+            path = PathLibPath(path)
+
+        self.path = path.resolve()
+        self.parts = self.path.parts
+        self.count = len(self.parts)
+
+    def joinpath(self, path: PathLike) -> 'Path':
+        return Path(self.path.joinpath(path))
+
+    def startswith(self, path: 'Path') -> bool:
+        return self.parts[:path.count] == path.parts
+
+    def accessible(self) -> bool:
+        if not self.path.exists() or not self.path.is_file():
+            return False
+
+        if os.access(self.path, os.R_OK):
+            return True
+
+        return True
+
+
 class ASGIMiddlewareStaticFile:
-    def __init__(self, app, static_url, static_paths) -> None:
+    def __init__(
+        self, app, static_url: str, static_root_paths: List[PathLike]
+    ) -> None:
         self.app = app
         self.static_url = '/{}/'.format(static_url.strip('/').rstrip('/'))
         self.static_url_length = len(self.static_url)
-        self.static_paths = static_paths
+        self.static_root_paths = [Path(p) for p in static_root_paths]
 
     async def __call__(self, scope, receive, send) -> None:
-        if scope["type"] == "http" and scope['path'][:self.static_url_length] == self.static_url:
-            if scope['method'] == 'GET':
-                await self.handle(send, scope['path'][self.static_url_length:])
+        if scope['type'] == 'http' and (
+            scope['path'][:self.static_url_length] == self.static_url
+        ):
+            if scope['method'] == 'HEAD':  # TODO
+                await self._handle(
+                    send, scope['path'][self.static_url_length:], is_head=True
+                )
                 return
-
-            elif scope['method'] == 'HEAD':  # TODO
-                await self.handle(send, scope['path'][self.static_url_length:], is_head=True)
+            elif scope['method'] == 'GET':
+                await self._handle(send,
+                                   scope['path'][self.static_url_length:])
                 return
 
             # 405
-            await self._send_unusual_response(send, 405, b'405 METHOD NOT ALLOWED')
+            await self.send_response_in_one_call(
+                send, 405, b'405 METHOD NOT ALLOWED'
+            )
             return
 
         await self.app(scope, receive, send)
         return
 
-    async def handle(self, send, filename, is_head=False) -> None:
+    async def _handle(self, send, sub_path, is_head=False) -> None:
         # search file
-        absolute_path_file_name = await self._search_file(self.static_paths, filename)
-        if absolute_path_file_name is None:
-            # 404
-            await self._send_unusual_response(send, 404, b'404 NOT FOUND')
+        try:
+            abs_path = self.locate_the_file(sub_path)
+        except ValueError:
+            await self.send_response_in_one_call(
+                send, 403, b'403 FORBIDDEN, CROSS BORDER ACCESS'
+            )
+            return
+
+        if abs_path is None:
+            await self.send_response_in_one_call(send, 404, b'404 NOT FOUND')
             return
 
         # create headers
-        content_type, encoding = mimetypes.guess_type(absolute_path_file_name)
+        content_type, encoding = mimetypes.guess_type(abs_path.path)
         if content_type:
-            content_type = bytes(content_type, encoding='utf-8')
+            content_type = content_type.encode('utf-8')
         else:
             content_type = b''
         if encoding:
-            encoding = bytes(encoding, encoding='utf-8')
+            encoding = encoding.encode('utf-8')
         else:
             encoding = b''
-        stat_result = await aio_stat(absolute_path_file_name)
-        file_size = bytes(str(stat_result.st_size), encoding='utf-8')
-        last_modified = bytes(datetime.fromtimestamp(stat_result.st_mtime).strftime(
+        stat_result = await aio_stat(abs_path.path)
+        file_size = str(stat_result.st_size).encode('utf-8')
+        last_modified = datetime.fromtimestamp(stat_result.st_mtime).strftime(
             '%a, %d %b %Y %H:%M:%S GMT'
-        ), encoding='utf-8')
+        ).encode('utf-8')
         headers = [
             (b'Content-Encodings', encoding),
             (b'Content-Type', content_type),
             (b'Content-Length', file_size),
             (b'Accept-Ranges', b'bytes'),
             (b'Last-Modified', last_modified),
-            (b'ETag', md5(file_size + last_modified).hexdigest().encode('utf-8')),
+            (
+                b'ETag',
+                md5(file_size + last_modified).hexdigest().encode('utf-8')
+            ),
         ]
 
         # send headers
@@ -83,32 +133,37 @@ class ASGIMiddlewareStaticFile:
             return
 
         # send file
-        async with aiofiles.open(absolute_path_file_name, mode="rb") as f:
+        async with aiofiles.open(abs_path.path, mode='rb') as f:
             more_body = True
             while more_body:
                 data = await f.read(_FILE_BLOCK_SIZE)
                 more_body = len(data) == _FILE_BLOCK_SIZE
                 await send(
                     {
-                        "type": "http.response.body",
-                        "body": data,
-                        "more_body": more_body,
+                        'type': 'http.response.body',
+                        'body': data,
+                        'more_body': more_body,
                     }
                 )
 
         return
 
-    @staticmethod
-    async def _search_file(search_paths, filename):
-        for path in search_paths:
-            f_name = os.path.join(path, filename)
-            if os.path.exists(f_name) and os.path.isfile(f_name) and os.access(f_name, os.R_OK):
-                return f_name
+    def locate_the_file(self, sub_path: PathLike) -> Optional[Path]:
+        """location the file in self.static_root_paths"""
+        for root_path in self.static_root_paths:
+            abs_path = root_path.joinpath(sub_path)
+            if not abs_path.startswith(root_path):
+                raise ValueError
+
+            if abs_path.accessible():
+                return abs_path
 
         return None
 
     @staticmethod
-    async def _send_unusual_response(send, status, message) -> None:
+    async def send_response_in_one_call(
+        send: Callable, status: int, message: bytes
+    ) -> None:
         await send({
             'type': 'http.response.start',
             'status': status,

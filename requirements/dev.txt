@@ -1,4 +1,7 @@
 -r base.txt
 
+pytest
+pytest-asyncio
+
 uvicorn
 quart

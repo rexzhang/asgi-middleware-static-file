@@ -37,23 +37,23 @@ STATIC_DIRS = [os.path.join(BASE_DIR, 'demo_static')]
 
 
 async def app(scope, receive, send):
-    assert scope['type'] == 'http'
+  assert scope['type'] == 'http'
 
-    await send({
-        'type': 'http.response.start',
-        'status': 200,
-        'headers': [
-            [b'content-type', b'text/plain'],
-        ],
-    })
-    await send({
-        'type': 'http.response.body',
-        'body': b'Hello, world!',
-    })
+  await send({
+    'type': 'http.response.start',
+    'status': 200,
+    'headers': [
+      [b'content-type', b'text/plain'],
+    ],
+  })
+  await send({
+    'type': 'http.response.body',
+    'body': b'Hello, world!',
+  })
 
 
 app = ASGIMiddlewareStaticFile(
-    app, static_url='static', static_paths=STATIC_DIRS
+  app, static_url='static', static_root_paths=STATIC_DIRS
 )
 ```
 
@@ -98,8 +98,8 @@ from asgi_middleware_static_file import ASGIMiddlewareStaticFile
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dj_project.settings')
 application = get_asgi_application()
 application = ASGIMiddlewareStaticFile(
-    application, static_url=settings.STATIC_URL,
-    static_paths=[settings.STATIC_ROOT]
+  application, static_url=settings.STATIC_URL,
+  static_root_paths=[settings.STATIC_ROOT]
 )
 ```
 
@@ -138,11 +138,11 @@ app = Quart(__name__)
 
 @app.route('/')
 async def hello():
-    return 'hello'
+  return 'hello'
 
 
 app = ASGIMiddlewareStaticFile(
-    app, static_url='static', static_paths=STATIC_DIRS
+  app, static_url='static', static_root_paths=STATIC_DIRS
 )
 ```
 
