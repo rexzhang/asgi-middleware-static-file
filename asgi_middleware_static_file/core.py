@@ -2,7 +2,7 @@
 # coding=utf-8
 
 
-from typing import Optional, Union, TypeVar, List, Callable
+from typing import Optional, TypeVar, List, Callable
 import os
 import mimetypes
 from sys import version_info
