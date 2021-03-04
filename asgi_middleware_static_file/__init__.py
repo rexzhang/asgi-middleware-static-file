@@ -11,7 +11,7 @@ from .core import (  # noqa: F401
     Path,
 )
 
-__version__ = '0.2.1'
+__version__ = '0.3.0'
 
 __author__ = 'Rex Zhang'
 __author_email__ = 'rex.zhang@gmail.com'
