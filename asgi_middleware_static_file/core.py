@@ -22,7 +22,7 @@ _FILE_BLOCK_SIZE = 64 * 1024
 
 
 class Path:
-    def __init__(self, path: Union[PathLike, 'Path']):
+    def __init__(self, path: PathLike):
         if not isinstance(path, PathLibPath):
             path = PathLibPath(path)
 
