@@ -86,16 +86,24 @@ DEMO.6                        100%[=============================================
 
 ## [Django](https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/)
 
-Update file `dj_project/asgi.py`
+Update file [example/django_example/django_example/asgi.py](https://github.com/rexzhang/asgi-middleware-static-file/blob/master/example/django_example/django_example/asgi.py)
 
 ```python
+"""
+ASGI config for django_example project.
+It exposes the ASGI callable as a module-level variable named ``application``.
+For more information on this file, see
+https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/
+"""
+
 import os
 
 from django.conf import settings
 from django.core.asgi import get_asgi_application
 from asgi_middleware_static_file import ASGIMiddlewareStaticFile
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dj_project.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_example.settings')
+
 application = get_asgi_application()
 application = ASGIMiddlewareStaticFile(
   application, static_url=settings.STATIC_URL,
@@ -107,17 +115,20 @@ Do't forget execute
 
 ```shell
 python manage.py collectstatic
+133 static files copied to '/Users/rex/p/asgi-middleware-static-file/example/django_example/staticfiles'.
 ```
 
 Run server
 
 ```shell
-daphne dj_project.asgi:application -b 0.0.0.0
-2020-04-14 17:20:57,530 INFO     Starting server at tcp:port=8000:interface=0.0.0.0
-2020-04-14 17:20:57,531 INFO     HTTP/2 support not enabled (install the http2 and tls Twisted extras)
-2020-04-14 17:20:57,531 INFO     Configuring endpoint tcp:port=8000:interface=0.0.0.0
-2020-04-14 17:20:57,532 INFO     Listening on TCP address 0.0.0.0:8000
-127.0.0.1:62601 - - [14/Apr/2020:17:21:08] "GET /static/css/emo.css" 200 1692
+uvicorn django_example.asgi:application
+INFO:     Started server process [93869]
+INFO:     Waiting for application startup.
+INFO:     ASGI 'lifespan' protocol appears unsupported.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:61925 - "GET /static/DEMO.txt HTTP/1.1" 200 OK
+
 ```
 
 ## [Quart](https://pgjones.gitlab.io/quart/tutorials/quickstart.html) (Flask like)
