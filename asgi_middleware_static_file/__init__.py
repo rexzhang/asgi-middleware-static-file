@@ -11,7 +11,7 @@ from .core import (  # noqa: F401
     ASGIMiddlewarePath,
 )
 
-__version__ = '0.3.0'
+__version__ = '0.3.1'
 
 __author__ = 'Rex Zhang'
 __author_email__ = 'rex.zhang@gmail.com'

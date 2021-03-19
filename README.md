@@ -200,5 +200,4 @@ DEMO.7                        100%[=============================================
 
 - zero copy
 - file extension filter,
-- Etag,Cache Control
-- 404
+- Cache Control
