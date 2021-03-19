@@ -8,7 +8,7 @@ ASGI Middleware Static File
 
 from .core import (  # noqa: F401
     ASGIMiddlewareStaticFile,
-    Path,
+    ASGIMiddlewarePath,
 )
 
 __version__ = '0.3.0'

@@ -6,7 +6,7 @@ from typing import Optional, TypeVar, List, Callable
 import os
 import mimetypes
 from sys import version_info
-from pathlib import Path as PathLibPath
+from pathlib import Path
 from datetime import datetime
 from hashlib import md5
 
@@ -16,24 +16,25 @@ from aiofiles.os import stat as aio_stat
 if version_info.major > 3 and version_info.minor > 6:
     from os import PathLike
 else:
-    PathLike = TypeVar('PathLike', str, bytes, PathLibPath)
+    PathLike = TypeVar('PathLike', str, bytes, Path)
 
 _FILE_BLOCK_SIZE = 64 * 1024
 
 
-class Path:
+class ASGIMiddlewarePath:
     def __init__(self, path: PathLike):
-        if not isinstance(path, PathLibPath):
-            path = PathLibPath(path)
+        if not isinstance(path, Path):
+            path = Path(path)
 
         self.path = path.resolve()
+        self.path_as_str = self.path.as_posix()
         self.parts = self.path.parts
         self.count = len(self.parts)
 
-    def joinpath(self, path: PathLike) -> 'Path':
-        return Path(self.path.joinpath(path))
+    def joinpath(self, path: PathLike) -> 'ASGIMiddlewarePath':
+        return ASGIMiddlewarePath(self.path.joinpath(path))  # TODO ???
 
-    def startswith(self, path: 'Path') -> bool:
+    def startswith(self, path: 'ASGIMiddlewarePath') -> bool:
         return self.parts[:path.count] == path.parts
 
     def accessible(self) -> bool:
@@ -53,7 +54,8 @@ class ASGIMiddlewareStaticFile:
         self.app = app
         self.static_url = '/{}/'.format(static_url.strip('/').rstrip('/'))
         self.static_url_length = len(self.static_url)
-        self.static_root_paths = [Path(p) for p in static_root_paths]
+        self.static_root_paths = [ASGIMiddlewarePath(p) for p in
+                                  static_root_paths]
 
     async def __call__(self, scope, receive, send) -> None:
         if scope['type'] == 'http' and (
@@ -65,8 +67,9 @@ class ASGIMiddlewareStaticFile:
                 )
                 return
             elif scope['method'] == 'GET':
-                await self._handle(send,
-                                   scope['path'][self.static_url_length:])
+                await self._handle(
+                    send, scope['path'][self.static_url_length:]
+                )
                 return
 
             # 405
@@ -93,7 +96,7 @@ class ASGIMiddlewareStaticFile:
             return
 
         # create headers
-        content_type, encoding = mimetypes.guess_type(abs_path.path)
+        content_type, encoding = mimetypes.guess_type(abs_path)
         if content_type:
             content_type = content_type.encode('utf-8')
         else:
@@ -102,7 +105,7 @@ class ASGIMiddlewareStaticFile:
             encoding = encoding.encode('utf-8')
         else:
             encoding = b''
-        stat_result = await aio_stat(abs_path.path)
+        stat_result = await aio_stat(abs_path)
         file_size = str(stat_result.st_size).encode('utf-8')
         last_modified = datetime.fromtimestamp(stat_result.st_mtime).strftime(
             '%a, %d %b %Y %H:%M:%S GMT'
@@ -133,7 +136,7 @@ class ASGIMiddlewareStaticFile:
             return
 
         # send file
-        async with aiofiles.open(abs_path.path, mode='rb') as f:
+        async with aiofiles.open(abs_path, mode='rb') as f:
             more_body = True
             while more_body:
                 data = await f.read(_FILE_BLOCK_SIZE)
@@ -148,7 +151,7 @@ class ASGIMiddlewareStaticFile:
 
         return
 
-    def locate_the_file(self, sub_path: PathLike) -> Optional[Path]:
+    def locate_the_file(self, sub_path: PathLike) -> Optional[str]:
         """location the file in self.static_root_paths"""
         for root_path in self.static_root_paths:
             abs_path = root_path.joinpath(sub_path)
@@ -156,7 +159,7 @@ class ASGIMiddlewareStaticFile:
                 raise ValueError
 
             if abs_path.accessible():
-                return abs_path
+                return abs_path.path_as_str
 
         return None
 
