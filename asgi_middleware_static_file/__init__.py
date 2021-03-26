@@ -11,11 +11,11 @@ from .core import (  # noqa: F401
     ASGIMiddlewarePath,
 )
 
-__version__ = '0.3.1'
+__version__ = "0.3.1"
 
-__author__ = 'Rex Zhang'
-__author_email__ = 'rex.zhang@gmail.com'
-__licence__ = 'MIT'
+__author__ = "Rex Zhang"
+__author_email__ = "rex.zhang@gmail.com"
+__licence__ = "MIT"
 
-__description__ = 'ASGI Middleware for serving Static File.'
-__project_url__ = 'https://github.com/rexzhang/asgi-middleware-static-file'
+__description__ = "ASGI Middleware for serving Static File."
+__project_url__ = "https://github.com/rexzhang/asgi-middleware-static-file"

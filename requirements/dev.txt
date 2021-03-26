@@ -1,7 +1,5 @@
 -r base.txt
-
-pytest
-pytest-asyncio
+-r test.txt
 
 uvicorn
 django
