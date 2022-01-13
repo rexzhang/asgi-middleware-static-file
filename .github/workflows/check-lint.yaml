@@ -1,0 +1,30 @@
+name: Lint with Black and flake8
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'docs/**'
+      - '.github/**'
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - name: Lint with Black
+        uses: psf/black@stable
+        with:
+          args: ". --check"
+      - name: Install dependencies
+        run: |
+          pip install -U flake8
+      - name: Lint with flake8
+        run: |
+          flake8 --verbose asgi_middleware_static_file
