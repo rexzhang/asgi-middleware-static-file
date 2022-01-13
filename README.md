@@ -188,6 +188,29 @@ DEMO.7                        100%[=============================================
 2021-01-11 20:17:46 (1.46 MB/s) - 已保存 “DEMO.7” [26/26])
 ```
 
+# History
+
+## Version 0.3.2
+- Maintenance release
+- Drop Py35
+
+## Version 0.3.1
+- Compatible Py37-
+
+## Version 0.3.0
+- Check cross border access
+- Add more type hints
+
+## Version 0.2.1
+- Fix bug
+
+## Version 0.2.0
+- Update for aiofiles
+- Fix bug
+
+## Version 0.1.0
+- First release
+
 # Alternative
 
 - ASGI Middleware
