@@ -2,6 +2,7 @@
 
 ## Version 0.3.2
 - Maintenance release
+- Drop Py35
 
 ## Version 0.3.1
 
