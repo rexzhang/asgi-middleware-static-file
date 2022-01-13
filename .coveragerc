@@ -1,0 +1,6 @@
+[run]
+source = asgi_middleware_static_file
+omit = setup.py,examples.py,conftest.py,test_*,venv*
+
+[html]
+directory = htmlcov
