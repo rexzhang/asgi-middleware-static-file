@@ -2,4 +2,5 @@ flake8
 black
 
 pytest
+pytest-cov
 pytest-asyncio
