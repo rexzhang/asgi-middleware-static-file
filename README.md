@@ -53,7 +53,7 @@ DEMO                                   100%[====================================
 
 ## [Pure ASGI](https://asgi.readthedocs.io/en/latest/introduction.html)
 ### Code 
-`example_pure_asgi.py`
+[`example_pure_asgi.py`](example/example_pure_asgi.py)
 
 ### Start Server
 ```shell
@@ -69,7 +69,7 @@ INFO:     127.0.0.1:54529 - "GET /static/DEMO HTTP/1.1" 200 OK
 ## [Django](https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/)
 
 ### Code
-Update [/example_django/asgi.py](https://github.com/rexzhang/asgi-middleware-static-file/blob/master/example/example_django/example_django/asgi.py)
+[`/example_django/asgi.py`](example/example_django/example_django/asgi.py)
 
 ### Collect static file
 ```shell
@@ -95,7 +95,7 @@ INFO:     127.0.0.1:61925 - "GET /static/DEMO.txt HTTP/1.1" 200 OK
 ## [Quart](https://pgjones.gitlab.io/quart/tutorials/quickstart.html) (Flask like)
 
 ### Code 
-`example_quart.py`
+[`example_quart.py`](example/example_quart.py)
 
 ### Start Server
 ```shell
@@ -111,7 +111,7 @@ INFO:     127.0.0.1:56212 - "GET /static/DEMO HTTP/1.1" 200 OK
 # [WSGI app](https://www.python.org/dev/peps/pep-3333/)
 
 # Code 
-`example_wsgi_app.py`
+[`example_wsgi_app.py`](example/example_wsgi_app.py)
 
 ## Start Server
 ```shell
