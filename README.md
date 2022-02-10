@@ -12,7 +12,7 @@ ASGI Middleware for serving static file.
 
 # Why?
 
-> ASGIMiddlewareStaticFile is a solution when we need to distribute the whole project with static files in Docker; when the deployment environment has very limited resources.
+> ASGIMiddlewareStaticFile is a solution when we need to distribute the whole project with static files in Docker; or when the deployment environment has very limited resources.
 
 # Features
 
@@ -52,7 +52,7 @@ DEMO                                   100%[====================================
 
 ## [Pure ASGI](https://asgi.readthedocs.io/en/latest/introduction.html)
 ### Code 
-[`example_pure_asgi.py`](example/example_pure_asgi.py)
+[`example_pure_asgi.py`](https://github.com/rexzhang/asgi-middleware-static-file/blob/main/example/example_pure_asgi.py)
 
 ### Start Server
 ```shell
@@ -68,7 +68,7 @@ INFO:     127.0.0.1:54529 - "GET /static/DEMO HTTP/1.1" 200 OK
 ## [Django](https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/) 3.0+
 
 ### Code
-[`/example_django/asgi.py`](example/example_django/example_django/asgi.py)
+[`/example_django/asgi.py`](https://github.com/rexzhang/asgi-middleware-static-file/blob/main/example/example_django/example_django/asgi.py)
 
 ### Collect static file
 ```shell
@@ -93,7 +93,7 @@ INFO:     127.0.0.1:61925 - "GET /static/DEMO.txt HTTP/1.1" 200 OK
 ## [Quart](https://pgjones.gitlab.io/quart/tutorials/quickstart.html) (Flask like)
 
 ### Code 
-[`example_quart.py`](example/example_quart.py)
+[`example_quart.py`](https://github.com/rexzhang/asgi-middleware-static-file/blob/main/example/example_quart.py)
 
 ### Start Server
 ```shell
@@ -109,7 +109,7 @@ INFO:     127.0.0.1:56212 - "GET /static/DEMO HTTP/1.1" 200 OK
 ## [WSGI app](https://www.python.org/dev/peps/pep-3333/) eg: Flask, Django on WSGI mode
 
 ### Code 
-[`example_wsgi_app.py`](example/example_wsgi_app.py)
+[`example_wsgi_app.py`](https://github.com/rexzhang/asgi-middleware-static-file/blob/main/example/example_wsgi_app.py)
 
 ### Start Server
 ```shell
