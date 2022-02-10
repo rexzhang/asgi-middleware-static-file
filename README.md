@@ -109,10 +109,10 @@ INFO:     127.0.0.1:56212 - "GET /static/DEMO HTTP/1.1" 200 OK
 
 # [WSGI app](https://www.python.org/dev/peps/pep-3333/) eg: Flask, Django on WSGI mode
 
-# Code 
+## Code 
 [`example_wsgi_app.py`](example/example_wsgi_app.py)
 
-## Start Server
+### Start Server
 ```shell
 (venv) ➜  example git:(main) ✗ uvicorn example_wsgi_app:app
 INFO:     Started server process [8020]
