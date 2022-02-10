@@ -32,7 +32,6 @@ pip3 install -U ASGIMiddlewareStaticFile
 
 ### Prepare
 ```shell
-pip3 install -U ASGIMiddlewareStaticFile
 git clone https://github.com/rexzhang/asgi-middleware-static-file.git
 cd asgi-middleware-static-file/example
 ```
@@ -66,7 +65,7 @@ INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 INFO:     127.0.0.1:54529 - "GET /static/DEMO HTTP/1.1" 200 OK
 ```
 
-## [Django](https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/)
+## [Django](https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/) 3.0+
 
 ### Code
 [`/example_django/asgi.py`](example/example_django/example_django/asgi.py)
