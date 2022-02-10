@@ -73,8 +73,7 @@ INFO:     127.0.0.1:54529 - "GET /static/DEMO HTTP/1.1" 200 OK
 
 ### Collect static file
 ```shell
-cd example_django
-
+(venv) ➜  example git:(main) cd example_django 
 (venv) ➜  example_django git:(main) ✗ python manage.py collectstatic
 
 129 static files copied to '/Users/rex/p/asgi-middleware-static-file/example/example_django/staticfiles'.
@@ -108,7 +107,7 @@ INFO:     127.0.0.1:56191 - "GET / HTTP/1.1" 200 OK
 INFO:     127.0.0.1:56212 - "GET /static/DEMO HTTP/1.1" 200 OK
 ```
 
-# [WSGI app](https://www.python.org/dev/peps/pep-3333/)
+# [WSGI app](https://www.python.org/dev/peps/pep-3333/) eg: Flask, Django on WSGI mode
 
 # Code 
 [`example_wsgi_app.py`](example/example_wsgi_app.py)
