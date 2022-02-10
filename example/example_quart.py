@@ -4,7 +4,7 @@ from quart import Quart
 from asgi_middleware_static_file import ASGIMiddlewareStaticFile
 
 BASE_DIR = os.path.dirname(__name__)
-STATIC_DIRS = [os.path.join(BASE_DIR, "demo_static")]
+STATIC_DIRS = [os.path.join(BASE_DIR, "example_static")]
 
 app = Quart(__name__)
 

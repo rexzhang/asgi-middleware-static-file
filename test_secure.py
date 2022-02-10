@@ -4,7 +4,7 @@ import pytest
 
 from asgi_middleware_static_file import ASGIMiddlewareStaticFile
 
-BASE_PATH = pathlib.Path(__name__).resolve().parent / "example" / "demo_static"
+BASE_PATH = pathlib.Path(__name__).resolve().parent / "example" / "example_static"
 
 
 @pytest.mark.asyncio

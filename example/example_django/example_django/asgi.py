@@ -1,5 +1,5 @@
 """
-ASGI config for django_example project.
+ASGI config for example_django project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -13,7 +13,7 @@ from django.conf import settings
 from django.core.asgi import get_asgi_application
 from asgi_middleware_static_file import ASGIMiddlewareStaticFile
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_example.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "example_django.settings")
 
 application = get_asgi_application()
 application = ASGIMiddlewareStaticFile(
