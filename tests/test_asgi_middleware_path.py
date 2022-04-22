@@ -6,8 +6,8 @@ path = ASGIMiddlewarePath("/a/b/c/")
 
 
 def test_joinpath():
-    assert path.joinpath("d").path_as_str == "/a/b/c/d"
-    assert path.joinpath("d/e").path_as_str == "/a/b/c/d/e"
+    assert path.join_path("d").path_as_str == "/a/b/c/d"
+    assert path.join_path("d/e").path_as_str == "/a/b/c/d/e"
 
 
 def test_startswith():

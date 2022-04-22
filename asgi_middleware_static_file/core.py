@@ -31,7 +31,7 @@ class ASGIMiddlewarePath:
         self.parts = self.path.parts
         self.count = len(self.parts)
 
-    def joinpath(self, path: PathLike) -> "ASGIMiddlewarePath":
+    def join_path(self, path: PathLike) -> "ASGIMiddlewarePath":
         return ASGIMiddlewarePath(self.path.joinpath(path))  # TODO ???
 
     def startswith(self, path: "ASGIMiddlewarePath") -> bool:
@@ -159,7 +159,7 @@ class ASGIMiddlewareStaticFile:
     def locate_the_file(self, sub_path: PathLike) -> Optional[str]:
         """location the file in self.static_root_paths"""
         for root_path in self.static_root_paths:
-            abs_path = root_path.joinpath(sub_path)
+            abs_path = root_path.join_path(sub_path)
             if not abs_path.startswith(root_path):
                 raise ValueError
 

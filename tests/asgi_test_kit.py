@@ -16,6 +16,7 @@ from icecream import ic
 #  - 3.6+
 # example:
 #  - middleware:
+#   - https://github.com/rexzhang/asgi-middleware-static-file/blob/main/tests/test_with_mock_app.py
 #   - https://github.com/rexzhang/asgi-webdav/blob/main/tests/test_middleware_cors.py
 
 MOCK_APP_RESPONSE_SUCCESS = "I'm mock App"
