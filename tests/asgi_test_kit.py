@@ -148,7 +148,11 @@ class ASGITestClient:
             self.response.headers = data["headers"]
 
         elif data_type == "http.response.body":
-            self.response.data = data["body"]
+            body = data.get("body")
+            if body is not None:
+                self.response.data = data["body"]
+            else:
+                self.response.data = b""
 
         else:
             raise NotImplementedError()
@@ -187,6 +191,12 @@ class ASGITestClient:
 
     async def websocket(self, path, headers: Dict[str, str] = None) -> ASGIResponse:
         self.request = ASGIRequest("websocket", "GET", path, {}, b"")  # TODO
+        return await self._call_method()
+
+    async def head(self, path, headers: Dict[str, str] = None) -> ASGIResponse:
+        if headers is None:
+            headers = dict()
+        self.request = ASGIRequest("http", "HEAD", path, headers, b"")
         return await self._call_method()
 
     async def get(self, path, headers: Dict[str, str] = None) -> ASGIResponse:
