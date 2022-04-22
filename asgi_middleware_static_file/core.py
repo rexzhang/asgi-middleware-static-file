@@ -50,7 +50,13 @@ class ASGIMiddlewarePath:
 class ASGIMiddlewareStaticFile:
     def __init__(self, app, static_url: str, static_root_paths: List[PathLike]) -> None:
         self.app = app
-        self.static_url = "/{}/".format(static_url.strip("/").rstrip("/"))
+
+        static_url = static_url.strip("/").rstrip("/")
+        if len(static_url) == 0:
+            self.static_url = "/"
+        else:
+            self.static_url = "/{}/".format(static_url)
+
         self.static_url_length = len(self.static_url)
         self.static_root_paths = [ASGIMiddlewarePath(p) for p in static_root_paths]
 
