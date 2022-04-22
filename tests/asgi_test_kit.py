@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from typing import (
     Union,
     Dict,  # Deprecated since version 3.9
+    List,  # Deprecated since version 3.9
+    Tuple,  # Deprecated since version 3.9
 )
 
 import pytest
@@ -102,7 +104,7 @@ class ASGIResponse:
         return self._headers
 
     @headers.setter
-    def headers(self, data: list[tuple[bytes, bytes]]):
+    def headers(self, data: List[Tuple[bytes, bytes]]):
         ic("header in respone", data)
         self._headers = dict()
         try:
