@@ -20,7 +20,7 @@ class ASGIApp:
     def __init__(
         self,
         response_text: str = MOCK_APP_RESPONSE_SUCCESS,
-        app_response_header: dict[str, str] = None,
+        app_response_header: Union[dict[str, str], None] = None,
     ):
         self.response_body = response_text.encode("utf-8")
         self.app_response_header = app_response_header
