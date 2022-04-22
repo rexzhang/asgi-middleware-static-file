@@ -61,24 +61,27 @@ class ASGIMiddlewareStaticFile:
         self.static_root_paths = [ASGIMiddlewarePath(p) for p in static_root_paths]
 
     async def __call__(self, scope, receive, send) -> None:
-        if scope["type"] == "http" and (
-            scope["path"][: self.static_url_length] == self.static_url
-        ):
-            if scope["method"] == "HEAD":  # TODO
-                await self._handle(
-                    send, scope["path"][self.static_url_length :], is_head=True
-                )
-                return
-            elif scope["method"] == "GET":
-                await self._handle(send, scope["path"][self.static_url_length :])
-                return
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
 
+        s_path = scope.get("path")
+        if s_path is None or s_path[: self.static_url_length] != self.static_url:
+            await self.app(scope, receive, send)
+            return
+
+        if scope["method"] == "HEAD":  # TODO
+            await self._handle(send, s_path[self.static_url_length :], is_head=True)
+            return
+
+        elif scope["method"] == "GET":
+            await self._handle(send, s_path[self.static_url_length :])
+            return
+
+        else:
             # 405
             await self.send_response_in_one_call(send, 405, b"405 METHOD NOT ALLOWED")
             return
-
-        await self.app(scope, receive, send)
-        return
 
     async def _handle(self, send, sub_path, is_head=False) -> None:
         # search file
