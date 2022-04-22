@@ -128,7 +128,7 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=install_requires,
-    python_requires=">=3.5",
+    python_requires=">=3.6",
     # extras_require={},
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
