@@ -2,21 +2,17 @@
 # coding=utf-8
 
 
-from typing import Optional, TypeVar, List, Callable
+from typing import Optional, List, Callable
 import os
 import mimetypes
-from sys import version_info
 from pathlib import Path
 from datetime import datetime
 from hashlib import md5
+from os import PathLike
 
 import aiofiles
 from aiofiles.os import stat as aio_stat
 
-if version_info.major > 3 and version_info.minor > 6:
-    from os import PathLike
-else:
-    PathLike = TypeVar("PathLike", str, bytes, Path)
 
 _FILE_BLOCK_SIZE = 64 * 1024
 
