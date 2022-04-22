@@ -124,25 +124,29 @@ INFO:     127.0.0.1:63924 - "GET /static/DEMO HTTP/1.1" 200 OK
 
 # History
 
-## Version 0.3.2
+## v0.4.0 - 20220422
+- Rewrite some code
+- Fix bug #3(Cannot serve files from root (static_url="/" becomes "//")) 
+
+## v0.3.2
 - Maintenance release
 - Drop Py35
 
-## Version 0.3.1
+## v0.3.1
 - Compatible Py37-
 
-## Version 0.3.0
+## v0.3.0
 - Check cross border access
 - Add more type hints
 
-## Version 0.2.1
+## v0.2.1
 - Fix bug
 
-## Version 0.2.0
+## v0.2.0
 - Update for aiofiles
 - Fix bug
 
-## Version 0.1.0
+## v0.1.0
 - First release
 
 # Alternative
