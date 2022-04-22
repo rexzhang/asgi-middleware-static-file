@@ -70,6 +70,20 @@ async def test_method_get():
 
 
 @pytest.mark.asyncio
+async def test_method_not_allowed():
+    c = get_client()
+    r = await c.options("/static/", headers={})
+    assert r.status_code == 405
+
+
+@pytest.mark.asyncio
+async def test_cross_border_access():
+    c = get_client()
+    r = await c.get("/static/../aaa", headers={})
+    assert r.status_code == 403
+
+
+@pytest.mark.asyncio
 async def test_special_static_url():
     c = get_client(static_url="/")
 
