@@ -128,5 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+/DEMO*
 /example/DEMO*
 /example/example_django/staticfiles/

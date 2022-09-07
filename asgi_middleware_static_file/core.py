@@ -1,24 +1,20 @@
-#!/usr/bin/env python
-# coding=utf-8
-
-
-from typing import Optional, List, Callable
-import os
 import mimetypes
-from pathlib import Path
+import os
 from datetime import datetime
 from hashlib import md5
 from os import PathLike
+from pathlib import Path
+from typing import Callable, List, Optional, Union
 
-import aiofiles
-from aiofiles.os import stat as aio_stat
-
+from aiofiles import open as a_open
+from aiofiles import os as a_os
+from aiofiles.os import path as a_path
 
 _FILE_BLOCK_SIZE = 64 * 1024
 
 
 class ASGIMiddlewarePath:
-    def __init__(self, path: PathLike):
+    def __init__(self, path: Union[PathLike, str]):
         if not isinstance(path, Path):
             path = Path(path)
 
@@ -27,20 +23,20 @@ class ASGIMiddlewarePath:
         self.parts = self.path.parts
         self.count = len(self.parts)
 
-    def join_path(self, path: PathLike) -> "ASGIMiddlewarePath":
-        return ASGIMiddlewarePath(self.path.joinpath(path))  # TODO ???
+    def join_path(self, path: Union[PathLike, str]) -> "ASGIMiddlewarePath":
+        return ASGIMiddlewarePath(self.path.joinpath(path))
 
     def startswith(self, path: "ASGIMiddlewarePath") -> bool:
         return self.parts[: path.count] == path.parts
 
-    def accessible(self) -> bool:
-        if not self.path.exists() or not self.path.is_file():
+    async def accessible(self) -> bool:  # TODO: speed...
+        if not await a_path.exists(self.path) or not await a_path.isfile(self.path):
             return False
 
         if os.access(self.path, os.R_OK):
             return True
 
-        return True
+        return False
 
 
 class ASGIMiddlewareStaticFile:
@@ -82,7 +78,7 @@ class ASGIMiddlewareStaticFile:
     async def _handle(self, send, sub_path, is_head=False) -> None:
         # search file
         try:
-            abs_path = self.locate_the_file(sub_path)
+            abs_path = await self.locate_the_file(sub_path)
         except ValueError:
             await self.send_response_in_one_call(
                 send, 403, b"403 FORBIDDEN, CROSS BORDER ACCESS"
@@ -103,7 +99,7 @@ class ASGIMiddlewareStaticFile:
             encoding = encoding.encode("utf-8")
         else:
             encoding = b""
-        stat_result = await aio_stat(abs_path)
+        stat_result = await a_os.stat(abs_path)
         file_size = str(stat_result.st_size).encode("utf-8")
         last_modified = (
             datetime.fromtimestamp(stat_result.st_mtime)
@@ -137,7 +133,7 @@ class ASGIMiddlewareStaticFile:
             return
 
         # send file
-        async with aiofiles.open(abs_path, mode="rb") as f:
+        async with a_open(abs_path, mode="rb") as f:
             more_body = True
             while more_body:
                 data = await f.read(_FILE_BLOCK_SIZE)
@@ -152,14 +148,14 @@ class ASGIMiddlewareStaticFile:
 
         return
 
-    def locate_the_file(self, sub_path: PathLike) -> Optional[str]:
+    async def locate_the_file(self, sub_path: Union[PathLike, str]) -> Optional[str]:
         """location the file in self.static_root_paths"""
         for root_path in self.static_root_paths:
             abs_path = root_path.join_path(sub_path)
             if not abs_path.startswith(root_path):
                 raise ValueError
 
-            if abs_path.accessible():
+            if await abs_path.accessible():
                 return abs_path.path_as_str
 
         return None
