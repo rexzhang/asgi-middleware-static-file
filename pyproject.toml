@@ -1,10 +1,46 @@
 [build-system]
-# These are the assumed default build requirements from pip:
-# https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support
-requires = ["setuptools>=40.8.0", "wheel"]
+# https://peps.python.org/pep-0621
+# https://setuptools.pypa.io/en/latest/userguide/quickstart.html
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "ASGIMiddlewareStaticFile"
+description = "ASGI Middleware for serving Static File."
+readme = "README.md"
+requires-python = ">=3.6"
+license = { text = "MIT" }
+authors = [
+    { name = "Rex Zhang" },
+    { email = "rex.zhang@gmail.com" }
+]
+keywords = ["staticfile", "middleware", "asgi", "asyncio"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dynamic = ["version", "dependencies"]
+
+[project.urls]
+homepage = "https://github.com/rexzhang/asgi-middleware-static-file"
+documentation = "https://github.com/rexzhang/asgi-middleware-static-file/blob/main/README.md"
+repository = "https://github.com/rexzhang/asgi-middleware-static-file"
+changelog = "https://github.com/rexzhang/asgi-middleware-static-file/blob/main/README.md#history"
+
+[tool.setuptools]
+packages = ["asgi_middleware_static_file"]
+
+[tool.setuptools.dynamic]
+version = { attr = "asgi_middleware_static_file.VERSION" }
+dependencies = { file = "requirements/base.txt" }
 
 [tool.pytest.ini_options]
 pythonpath = "."
 addopts = "--cov=asgi_middleware_static_file --cov-report html"
 asyncio_mode = "auto"
+
+[tool.isort]
+profile = "black"
