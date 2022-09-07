@@ -1,8 +1,11 @@
+import asyncio
 import mimetypes
 import os
 from datetime import datetime
+from functools import partial, wraps
 from hashlib import md5
 from os import PathLike
+from os import access as os_access
 from pathlib import Path
 from typing import Callable, List, Optional, Union
 
@@ -11,6 +14,20 @@ from aiofiles import os as a_os
 from aiofiles.os import path as a_path
 
 _FILE_BLOCK_SIZE = 64 * 1024
+
+
+def a_wrap(func):
+    @wraps(func)
+    async def run(*args, loop=None, executor=None, **kwargs):
+        if loop is None:
+            loop = asyncio.get_event_loop()
+        pfunc = partial(func, *args, **kwargs)
+        return await loop.run_in_executor(executor, pfunc)
+
+    return run
+
+
+a_access = a_wrap(os_access)
 
 
 class ASGIMiddlewarePath:
@@ -29,11 +46,8 @@ class ASGIMiddlewarePath:
     def startswith(self, path: "ASGIMiddlewarePath") -> bool:
         return self.parts[: path.count] == path.parts
 
-    async def accessible(self) -> bool:  # TODO: speed...
-        if not await a_path.exists(self.path) or not await a_path.isfile(self.path):
-            return False
-
-        if os.access(self.path, os.R_OK):
+    async def accessible(self) -> bool:
+        if await a_path.isfile(self.path) and await a_access(self.path, os.R_OK):
             return True
 
         return False
