@@ -37,7 +37,7 @@ cd asgi-middleware-static-file/example
 ```
 
 ### Test with wget
-```shell
+```
 (venv) ➜  example git:(main) ✗ wget http://127.0.0.1:8000/static/DEMO
 --2022-02-10 16:02:07--  http://127.0.0.1:8000/static/DEMO
 正在连接 127.0.0.1:8000... 已连接。
@@ -51,11 +51,14 @@ DEMO                                   100%[====================================
 ```
 
 ## [Pure ASGI](https://asgi.readthedocs.io/en/latest/introduction.html)
-### Code 
+
+### Code
+
 [`example_pure_asgi.py`](https://github.com/rexzhang/asgi-middleware-static-file/blob/main/example/example_pure_asgi.py)
 
 ### Start Server
-```shell
+
+```
 (venv) ➜  example git:(main) ✗ uvicorn example_pure_asgi:app
 INFO:     Started server process [7965]
 INFO:     Waiting for application startup.
@@ -68,10 +71,12 @@ INFO:     127.0.0.1:54529 - "GET /static/DEMO HTTP/1.1" 200 OK
 ## [Django](https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/) 3.0+
 
 ### Code
+
 [`/example_django/asgi.py`](https://github.com/rexzhang/asgi-middleware-static-file/blob/main/example/example_django/example_django/asgi.py)
 
 ### Collect static file
-```shell
+
+```
 (venv) ➜  example git:(main) cd example_django 
 (venv) ➜  example_django git:(main) ✗ python manage.py collectstatic
 
@@ -79,7 +84,8 @@ INFO:     127.0.0.1:54529 - "GET /static/DEMO HTTP/1.1" 200 OK
 ```
 
 ### Start Server
-```shell
+
+```
 (venv) ➜  example_django git:(main) ✗ uvicorn example_django.asgi:application
 INFO:     Started server process [9107]
 INFO:     Waiting for application startup.
@@ -92,11 +98,13 @@ INFO:     127.0.0.1:61925 - "GET /static/DEMO.txt HTTP/1.1" 200 OK
 
 ## [Quart](https://pgjones.gitlab.io/quart/tutorials/quickstart.html) (Flask like)
 
-### Code 
+### Code
+
 [`example_quart.py`](https://github.com/rexzhang/asgi-middleware-static-file/blob/main/example/example_quart.py)
 
 ### Start Server
-```shell
+
+```
 (venv) ➜  example git:(main) ✗ uvicorn example_quart:app    
 INFO:     Started server process [7989]
 INFO:     Waiting for application startup.
@@ -108,11 +116,13 @@ INFO:     127.0.0.1:56212 - "GET /static/DEMO HTTP/1.1" 200 OK
 
 ## [WSGI app](https://www.python.org/dev/peps/pep-3333/) eg: Flask, Django on WSGI mode
 
-### Code 
+### Code
+
 [`example_wsgi_app.py`](https://github.com/rexzhang/asgi-middleware-static-file/blob/main/example/example_wsgi_app.py)
 
 ### Start Server
-```shell
+
+```
 (venv) ➜  example git:(main) ✗ uvicorn example_wsgi_app:app
 INFO:     Started server process [8020]
 INFO:     Waiting for application startup.
@@ -124,11 +134,19 @@ INFO:     127.0.0.1:63924 - "GET /static/DEMO HTTP/1.1" 200 OK
 
 # History
 
+## 0.5.0 -
+
+- Use more aiofile api
+- Dropped Python 3.6 support. If you require it, use version 0.4.0
+- Update package for pep517/pep621
+
 ## v0.4.0 - 20220422
+
 - Rewrite some code
-- Fix bug #3(Cannot serve files from root (static_url="/" becomes "//")) 
+- Fix bug #3(Cannot serve files from root (static_url="/" becomes "//"))
 
 ## v0.3.2
+
 - Maintenance release
 - Drop Py35
 
