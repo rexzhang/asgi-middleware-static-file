@@ -40,7 +40,9 @@ class ASGIMiddlewarePath:
 
 
 class ASGIMiddlewareStaticFile:
-    def __init__(self, app, static_url: str, static_root_paths: List[PathLike]) -> None:
+    def __init__(
+        self, app, static_url: str, static_root_paths: List[Union[PathLike, str]]
+    ) -> None:
         self.app = app
 
         static_url = static_url.strip("/").rstrip("/")
