@@ -1,14 +1,11 @@
 from base64 import b64encode
 from dataclasses import dataclass
-from typing import (
-    Union,
-    Dict,  # Deprecated since version 3.9
-    List,  # Deprecated since version 3.9
-    Tuple,  # Deprecated since version 3.9
-)
+from typing import Dict  # Deprecated since version 3.9
+from typing import List  # Deprecated since version 3.9
+from typing import Tuple  # Deprecated since version 3.9
+from typing import Union
 
 import pytest
-from icecream import ic
 
 # from:
 #  - https://gist.github.com/rexzhang/40e7f5ba023ec16fde860509eb9f3253
@@ -106,7 +103,7 @@ class ASGIResponse:
 
     @headers.setter
     def headers(self, data: List[Tuple[bytes, bytes]]):
-        ic("header in respone", data)
+        print("header in response", data)
         self._headers = dict()
         try:
             for k, v in data:
@@ -160,13 +157,13 @@ class ASGITestClient:
         return
 
     async def _call_method(self) -> ASGIResponse:
-        ic("input", self.request)
+        print("input", self.request)
         headers = {
             "user-agent": "ASGITestClient",
         }
         headers.update(self.request.headers)
         self.request.headers = headers
-        ic("prepare", self.request)
+        print("prepare", self.request)
 
         self.response = ASGIResponse()
         await self.app(

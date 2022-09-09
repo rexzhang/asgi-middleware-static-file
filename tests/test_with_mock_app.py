@@ -2,11 +2,9 @@ from pathlib import Path
 
 import pytest
 
-# from icecream import ic
-
-
 from asgi_middleware_static_file.core import ASGIMiddlewareStaticFile
-from .asgi_test_kit import ASGIApp, ASGITestClient, MOCK_APP_RESPONSE_SUCCESS
+
+from .asgi_test_kit import MOCK_APP_RESPONSE_SUCCESS, ASGIApp, ASGITestClient
 
 static_root_path = Path(__file__).parent.joinpath("static")
 
