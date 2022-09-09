@@ -134,7 +134,7 @@ INFO:     127.0.0.1:63924 - "GET /static/DEMO HTTP/1.1" 200 OK
 
 # History
 
-## 0.5.0 -
+## 0.5.0 - 20220909
 
 - Use more aiofile api
 - Dropped Python 3.6 support. If you require it, use version 0.4.0
