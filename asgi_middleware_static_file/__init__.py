@@ -4,4 +4,4 @@
 
 from .core import ASGIMiddlewarePath, ASGIMiddlewareStaticFile  # noqa: F401
 
-VERSION = "0.4.0"
+VERSION = "0.5.0"
