@@ -10,15 +10,14 @@ jobs:
     name: Publish
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install dependencies
         run: |
           python3 -m pip install -U -r requirements/pypi.txt
       - name: Build wheels
         run: |
           python -m build
-      - name: Publish package
-        uses: pypa/gh-action-pypi-publish@master
+      - name: Publish a Python distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          user: __token__
-          password: ${{ secrets.pypi_password }}
+          password: ${{ secrets.PYPI_API_TOKEN }}
