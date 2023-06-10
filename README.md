@@ -12,7 +12,8 @@ ASGI Middleware for serving static file.
 
 # Why?
 
-> ASGIMiddlewareStaticFile is a solution when we need to distribute the whole project with static files in Docker; or when the deployment environment has very limited resources.
+> ASGIMiddlewareStaticFile is a solution when we need to distribute the whole project with static files in Docker; or
+> when the deployment environment has very limited resources; or Internal network(Unable to reach CDN).
 
 # Features
 
