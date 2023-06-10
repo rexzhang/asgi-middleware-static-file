@@ -3,6 +3,7 @@ name: pytest
 on:
   push:
     paths-ignore:
+      - '*.md'
       - 'docs/**'
       - '.github/**'
 
