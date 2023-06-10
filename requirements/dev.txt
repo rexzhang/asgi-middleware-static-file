@@ -2,6 +2,8 @@
 -r test.txt
 -r pypi.txt
 
+pre-commit
+
 asgiref
 uvicorn
 django

@@ -48,7 +48,7 @@ class ASGIMiddlewareStaticFile:
         if len(static_url) == 0:
             self.static_url = "/"
         else:
-            self.static_url = "/{}/".format(static_url)
+            self.static_url = f"/{static_url}/"
 
         self.static_url_length = len(self.static_url)
         self.static_root_paths = [ASGIMiddlewarePath(p) for p in static_root_paths]
@@ -92,14 +92,14 @@ class ASGIMiddlewareStaticFile:
 
         # create headers
         content_type, encoding = mimetypes.guess_type(abs_path)
-        if content_type:
-            content_type = content_type.encode("utf-8")
-        else:
+        if content_type is None:
             content_type = b""
-        if encoding:
-            encoding = encoding.encode("utf-8")
         else:
+            content_type = content_type.encode("utf-8")
+        if encoding is None:
             encoding = b""
+        else:
+            encoding = encoding.encode("utf-8")
         stat_result = await aiofiles.os.stat(abs_path)
         file_size = str(stat_result.st_size).encode("utf-8")
         last_modified = (
