@@ -18,7 +18,7 @@ ASGI Middleware for serving static file.
 
 - Standard ASGI middleware implement
 - Async file IO
-- Support ETag(base on md5(file_size + last_modified) )
+- Support ETag, base on md5(file_size + last_modified)
 
 # Install
 
