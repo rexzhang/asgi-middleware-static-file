@@ -2,7 +2,10 @@
 # https://peps.python.org/pep-0621
 # https://setuptools.pypa.io/en/latest/userguide/quickstart.html
 # https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
-requires = ["setuptools>=61.0", "wheel"]
+requires = [
+    "setuptools>=61.0",
+    "wheel",
+]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -13,9 +16,14 @@ requires-python = ">=3.7"
 license = { text = "MIT" }
 authors = [
     { name = "Rex Zhang" },
-    { email = "rex.zhang@gmail.com" }
+    { email = "rex.zhang@gmail.com" },
 ]
-keywords = ["staticfile", "middleware", "asgi", "asyncio"]
+keywords = [
+    "staticfile",
+    "middleware",
+    "asgi",
+    "asyncio",
+]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3.7",
@@ -23,10 +31,14 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 
-dynamic = ["version", "dependencies"]
+dynamic = [
+    "version",
+    "dependencies",
+]
 
 [project.urls]
 homepage = "https://github.com/rexzhang/asgi-middleware-static-file"
@@ -35,7 +47,9 @@ repository = "https://github.com/rexzhang/asgi-middleware-static-file"
 changelog = "https://github.com/rexzhang/asgi-middleware-static-file/blob/main/README.md#history"
 
 [tool.setuptools]
-packages = ["asgi_middleware_static_file"]
+packages = [
+    "asgi_middleware_static_file",
+]
 
 [tool.setuptools.dynamic]
 version = { attr = "asgi_middleware_static_file.VERSION" }
