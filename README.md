@@ -128,6 +128,11 @@ application = ASGIMiddlewareStaticFile(
 
 ## History
 
+### 0.6.1 - 20231219
+
+- Maintenance update
+- Change depend policy
+
 ### 0.6.0 - 20230210
 
 - Update aiofiles to 23.1.0
