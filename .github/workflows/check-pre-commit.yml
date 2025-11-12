@@ -1,0 +1,22 @@
+# https://github.com/GriceTurrble/precommit-checks-action
+name: pre-commit
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**.py"
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  pre-commit-check:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v5
+      # https://github.com/griceturrble/precommit-checks-action
+      - uses: griceturrble/precommit-checks-action@v2
