@@ -1,8 +1,8 @@
 # ASGIMiddlewareStaticFile
 
-![GitHub](https://img.shields.io/github/license/rexzhang/asgi-middleware-static-file)
-[![](https://img.shields.io/pypi/v/ASGIMiddlewareStaticFile.svg)](https://pypi.org/project/ASGIMiddlewareStaticFile/)
-[![](https://img.shields.io/pypi/pyversions/ASGIMiddlewareStaticFile.svg)](https://pypi.org/project/ASGIMiddlewareStaticFile/)
+![GitHub License](https://img.shields.io/github/license/rexzhang/asgi-middleware-static-file)
+[![PyPI - Version](https://img.shields.io/pypi/v/ASGIMiddlewareStaticFile.svg)](https://pypi.org/project/ASGIMiddlewareStaticFile/)
+![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https://raw.githubusercontent.com/rexzhang/asgi-middleware-static-file/main/pyproject.toml)
 ![Pytest Workflow Status](https://github.com/rexzhang/asgi-middleware-static-file/actions/workflows/check-pytest.yaml/badge.svg)
 [![codecov](https://codecov.io/gh/rexzhang/asgi-middleware-static-file/branch/main/graph/badge.svg?token=083O4RHEZE)](https://codecov.io/gh/rexzhang/asgi-middleware-static-file)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
