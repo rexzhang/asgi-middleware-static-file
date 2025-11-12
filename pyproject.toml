@@ -39,7 +39,7 @@ packages = ["asgi_middleware_static_file"]
 
 [tool.setuptools.dynamic]
 version = { attr = "asgi_middleware_static_file.VERSION" }
-dependencies = { file = "requirements/base.txt" }
+dependencies = { file = "requirements.d/base.txt" }
 
 [tool.pytest.ini_options]
 pythonpath = "."

@@ -2,8 +2,6 @@ name: pytest
 
 on:
   push:
-    branches:
-      - main
     paths:
       - "**.py"
 
@@ -40,8 +38,7 @@ jobs:
             ${{ runner.os }}-
       - name: Install dependencies
         run: |
-          pip install -U -r requirements/base.txt
-          pip install -U -r requirements/test.txt
+          pip install -U -r requirements.d/test.txt
       - name: Test with pytest
         run: |
           pytest --cov=asgi_middleware_static_file --cov-report=xml
