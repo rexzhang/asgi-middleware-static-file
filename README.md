@@ -49,7 +49,7 @@ cd asgi-middleware-static-file/example
 长度：26 []
 正在保存至: “DEMO”
 
-DEMO                                   100%[===========================================================================>]      26  --.-KB/s  用时 0s      
+DEMO                                   100%[===========================================================================>]      26  --.-KB/s  用时 0s
 
 2022-02-10 16:02:08 (529 KB/s) - 已保存 “DEMO” [26/26])
 ```
@@ -75,7 +75,7 @@ DEMO                                   100%[====================================
 #### Collect static file
 
 ```shell
-(venv) ➜  example git:(main) cd example_django 
+(venv) ➜  example git:(main) cd example_django
 (venv) ➜  example_django git:(main) ✗ python manage.py collectstatic
 
 129 static files copied to '/Users/rex/p/asgi-middleware-static-file/example/example_django/staticfiles'.
@@ -96,7 +96,7 @@ DEMO                                   100%[====================================
 #### Start Server
 
 ```shell
-(venv) ➜  example git:(main) ✗ uvicorn example_quart:app    
+(venv) ➜  example git:(main) ✗ uvicorn example_quart:app
 ```
 
 ### [WSGI app](https://www.python.org/dev/peps/pep-3333/) eg: Flask, Django on WSGI mode
@@ -127,6 +127,10 @@ application = ASGIMiddlewareStaticFile(
 ```
 
 ## History
+
+### 0.6.2 - 20251112
+
+- Maintenance update
 
 ### 0.6.1 - 20231219
 
@@ -180,7 +184,6 @@ application = ASGIMiddlewareStaticFile(
 
 - ASGI Middleware
   - django.contrib.staticfiles.handlers.ASGIStaticFilesHandler
-
 - WSGI Middleware
   - <https://github.com/kobinpy/wsgi-static-middleware>
   - <https://pypi.org/project/whitenoise/>
