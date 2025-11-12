@@ -1,10 +1,8 @@
-# - https://github.com/pypa/gh-action-pypi-publish
+# https://github.com/rexzhang/python-project-template/edit/main/.github/workflows/release-github.yaml
 name: Publish package to PyPI
 
 on:
   push:
-    branches:
-      - main
     tags:
       - "v*"
 
@@ -14,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/project/ASGIMiddlewareStaticFile
+      url: ${{ vars.PYPI_PROJECT_URL }}
     permissions:
       id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
     steps:
