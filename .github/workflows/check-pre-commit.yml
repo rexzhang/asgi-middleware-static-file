@@ -1,4 +1,4 @@
-# https://github.com/GriceTurrble/precommit-checks-action
+# https://github.com/rexzhang/python-project-template/edit/main/.github/workflows/check-pre-commit.yml
 name: pre-commit
 
 on:
