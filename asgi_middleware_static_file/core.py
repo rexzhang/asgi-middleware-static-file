@@ -1,10 +1,17 @@
-import mimetypes
 import os
+import sys
 from collections.abc import Iterable
 from datetime import datetime
 from hashlib import md5
 from pathlib import Path
 from typing import TypeAlias
+
+# https://docs.python.org/zh-cn/3/library/mimetypes.html#mimetypes.guess_type
+# Deprecated since version 3.13: Passing a file path instead of URL is soft deprecated. Use guess_file_type() for this.
+if sys.version_info >= (3, 13):
+    from mimetypes import guess_file_type
+else:
+    from mimetypes import guess_type as guess_file_type
 
 import aiofiles
 import aiofiles.os
@@ -109,7 +116,7 @@ class ASGIMiddlewareStaticFile:
             return
 
         # create headers
-        content_type_guess, encoding_guess = mimetypes.guess_type(abs_path)
+        content_type_guess, encoding_guess = guess_file_type(abs_path)
         if content_type_guess is None:
             content_type = b""
         else:
