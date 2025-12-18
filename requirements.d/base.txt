@@ -1,2 +1,0 @@
-aiofiles>=25.1.0
-asgiref

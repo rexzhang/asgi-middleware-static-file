@@ -1,9 +1,6 @@
-[build-system]
 # https://peps.python.org/pep-0621
 # https://setuptools.pypa.io/en/latest/userguide/quickstart.html
 # https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
 
 [project]
 name = "ASGIMiddlewareStaticFile"
@@ -15,7 +12,16 @@ authors = [{ name = "Rex Zhang" }, { email = "rex.zhang@gmail.com" }]
 keywords = ["staticfile", "middleware", "asgi", "asyncio"]
 classifiers = ["Development Status :: 4 - Beta", "Topic :: Software Development :: Libraries :: Python Modules"]
 
-dynamic = ["version", "dependencies"]
+dynamic = ["version"]
+
+dependencies = ["aiofiles>=25.1.0", "asgiref"]
+
+[project.optional-dependencies]
+test = ["pytest", "pytest-cov", "pytest-asyncio"]
+mypy = ["mypy", "types-aiofiles"]
+pypi = ["build", "wheel", "twine"]
+
+dev = ["ASGIMiddlewareStaticFile[test]", "ASGIMiddlewareStaticFile[mypy]", "ASGIMiddlewareStaticFile[pypi]"]
 
 [project.urls]
 homepage = "https://github.com/rexzhang/asgi-middleware-static-file"
@@ -23,12 +29,15 @@ documentation = "https://github.com/rexzhang/asgi-middleware-static-file/blob/ma
 repository = "https://github.com/rexzhang/asgi-middleware-static-file"
 changelog = "https://github.com/rexzhang/asgi-middleware-static-file/blob/main/README.md#history"
 
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [tool.setuptools]
 packages = ["asgi_middleware_static_file"]
 
 [tool.setuptools.dynamic]
 version = { attr = "asgi_middleware_static_file.__version__" }
-dependencies = { file = "requirements.d/base.txt" }
 
 [tool.pytest.ini_options]
 pythonpath = "."
@@ -37,7 +46,6 @@ asyncio_mode = "auto"
 
 [tool.isort]
 profile = "black"
-
 
 [tool.mypy]
 python_version = "3.10"

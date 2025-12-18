@@ -31,14 +31,14 @@ jobs:
         with:
           # This path is specific to Ubuntu
           path: ~/.cache/pip
-          # Look to see if there is a cache hit for the corresponding requirements file
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          # Look to see if there is a cache hit for the corresponding pyproject.toml file
+          key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
             ${{ runner.os }}-pip-
             ${{ runner.os }}-
       - name: Install dependencies
         run: |
-          pip install -U -r requirements.d/test.txt
+          pip install -U -e ".[test]"
       - name: Test with pytest
         run: |
           pytest --cov=asgi_middleware_static_file --cov-report=xml

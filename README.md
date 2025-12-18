@@ -126,6 +126,12 @@ application = ASGIMiddlewareStaticFile(
 )
 ```
 
+## Develement
+
+```shell
+pip install -U -e ".[dev]"
+```
+
 ## History
 
 ### Next
@@ -189,6 +195,7 @@ application = ASGIMiddlewareStaticFile(
 - ASGI Middleware
   - django.contrib.staticfiles.handlers.ASGIStaticFilesHandler
 - WSGI Middleware
+
   - <https://github.com/kobinpy/wsgi-static-middleware>
   - <https://pypi.org/project/whitenoise/>
 
