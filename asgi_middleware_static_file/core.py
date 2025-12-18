@@ -9,9 +9,9 @@ from typing import TypeAlias
 # https://docs.python.org/zh-cn/3/library/mimetypes.html#mimetypes.guess_type
 # Deprecated since version 3.13: Passing a file path instead of URL is soft deprecated. Use guess_file_type() for this.
 if sys.version_info >= (3, 13):
-    from mimetypes import guess_file_type
+    from mimetypes import guess_file_type  # pragma: no cover
 else:
-    from mimetypes import guess_type as guess_file_type
+    from mimetypes import guess_type as guess_file_type  # pragma: no cover
 
 import aiofiles
 import aiofiles.os

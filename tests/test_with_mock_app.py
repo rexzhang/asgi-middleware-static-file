@@ -8,7 +8,8 @@ from .asgi_test_kit import MOCK_APP_RESPONSE_SUCCESS, ASGIApp, ASGITestClient
 
 static_root_path = Path(__file__).parent.joinpath("static")
 
-TEXT_FILE_CONTENT = "this is a text file"
+TEXT_FILE_CONTENT_ASCII = "this is a text file"
+TEXT_FILE_CONTENT_UTF8 = "民族的就是世界的"
 
 
 def get_client(static_url="/static"):
@@ -61,7 +62,7 @@ async def test_method_get():
 
     r = await c.get("/static/text-file.txt")
     assert r.status_code == 200
-    assert r.text == TEXT_FILE_CONTENT
+    assert r.text == TEXT_FILE_CONTENT_ASCII
 
     r = await c.get("/static/does-not-exist.txt")
     assert r.status_code == 404
@@ -90,4 +91,29 @@ async def test_special_static_url():
 
     r = await c.get("/text-file.txt")
     assert r.status_code == 200
-    assert r.text == TEXT_FILE_CONTENT
+    assert r.text == TEXT_FILE_CONTENT_ASCII
+
+
+@pytest.mark.asyncio
+async def test_utf_8_file():
+    c = get_client(static_url="/")
+
+    r = await c.get("/utf8-file.txt")
+    assert r.status_code == 200
+    assert r.text == TEXT_FILE_CONTENT_UTF8
+
+
+@pytest.mark.asyncio
+async def test_content_type_guess_is_none():
+    c = get_client(static_url="/")
+
+    r = await c.get("/content_type_guess_is_none")
+    assert r.status_code == 200
+
+
+@pytest.mark.asyncio
+async def test_encoding_guess_is_not_none():
+    c = get_client(static_url="/")
+
+    r = await c.get("/text-file.txt.tar.gz")
+    assert r.status_code == 200
