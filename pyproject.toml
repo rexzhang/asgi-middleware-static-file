@@ -27,7 +27,7 @@ changelog = "https://github.com/rexzhang/asgi-middleware-static-file/blob/main/R
 packages = ["asgi_middleware_static_file"]
 
 [tool.setuptools.dynamic]
-version = { attr = "asgi_middleware_static_file.VERSION" }
+version = { attr = "asgi_middleware_static_file.__version__" }
 dependencies = { file = "requirements.d/base.txt" }
 
 [tool.pytest.ini_options]
@@ -37,3 +37,14 @@ asyncio_mode = "auto"
 
 [tool.isort]
 profile = "black"
+
+
+[tool.mypy]
+python_version = "3.10"
+files = ["asgi_middleware_static_file/"]
+
+strict = true
+strict_bytes = true
+
+warn_return_any = true
+warn_unused_configs = true

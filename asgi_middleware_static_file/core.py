@@ -1,20 +1,30 @@
 import mimetypes
 import os
-from collections.abc import Callable
+from collections.abc import Iterable
 from datetime import datetime
 from hashlib import md5
-from os import PathLike
 from pathlib import Path
+from typing import TypeAlias
 
 import aiofiles
 import aiofiles.os
 import aiofiles.ospath
+from asgiref.typing import (
+    ASGI3Application,
+    ASGIReceiveCallable,
+    ASGISendCallable,
+    Scope,
+)
+
+ASGIHeaders: TypeAlias = Iterable[tuple[bytes, bytes]]
+
 
 _FILE_BLOCK_SIZE = 64 * 1024
 
 
 class ASGIMiddlewarePath:
-    def __init__(self, path: PathLike | str):
+
+    def __init__(self, path: Path | str):
         if not isinstance(path, Path):
             path = Path(path)
 
@@ -23,7 +33,7 @@ class ASGIMiddlewarePath:
         self.parts = self.path.parts
         self.count = len(self.parts)
 
-    def join_path(self, path: PathLike | str) -> "ASGIMiddlewarePath":
+    def join_path(self, path: Path | str) -> "ASGIMiddlewarePath":
         return ASGIMiddlewarePath(self.path.joinpath(path))
 
     def startswith(self, path: "ASGIMiddlewarePath") -> bool:
@@ -39,8 +49,12 @@ class ASGIMiddlewarePath:
 
 
 class ASGIMiddlewareStaticFile:
+
     def __init__(
-        self, app, static_url: str, static_root_paths: list[PathLike | str]
+        self,
+        app: ASGI3Application,
+        static_url: str,
+        static_root_paths: list[Path | str],
     ) -> None:
         self.app = app
 
@@ -53,7 +67,9 @@ class ASGIMiddlewareStaticFile:
         self.static_url_length = len(self.static_url)
         self.static_root_paths = [ASGIMiddlewarePath(p) for p in static_root_paths]
 
-    async def __call__(self, scope, receive, send) -> None:
+    async def __call__(
+        self, scope: Scope, receive: ASGIReceiveCallable, send: ASGISendCallable
+    ) -> None:
         if scope["type"] != "http":
             await self.app(scope, receive, send)
             return
@@ -76,7 +92,9 @@ class ASGIMiddlewareStaticFile:
             await self.send_response_in_one_call(send, 405, b"405 METHOD NOT ALLOWED")
             return
 
-    async def _handle(self, send, sub_path, is_head=False) -> None:
+    async def _handle(
+        self, send: ASGISendCallable, sub_path: Path | str, is_head: bool = False
+    ) -> None:
         # search file
         try:
             abs_path = await self.locate_the_file(sub_path)
@@ -91,15 +109,15 @@ class ASGIMiddlewareStaticFile:
             return
 
         # create headers
-        content_type, encoding = mimetypes.guess_type(abs_path)
-        if content_type is None:
+        content_type_guess, encoding_guess = mimetypes.guess_type(abs_path)
+        if content_type_guess is None:
             content_type = b""
         else:
-            content_type = content_type.encode("utf-8")
-        if encoding is None:
+            content_type = content_type_guess.encode("utf-8")
+        if encoding_guess is None:
             encoding = b""
         else:
-            encoding = encoding.encode("utf-8")
+            encoding = encoding_guess.encode("utf-8")
         stat_result = await aiofiles.os.stat(abs_path)
         file_size = str(stat_result.st_size).encode("utf-8")
         last_modified = (
@@ -107,13 +125,15 @@ class ASGIMiddlewareStaticFile:
             .strftime("%a, %d %b %Y %H:%M:%S GMT")
             .encode("utf-8")
         )
-        headers = [
+        etag = md5(file_size + last_modified).hexdigest().encode("utf-8")
+
+        headers: ASGIHeaders = [
             (b"Content-Encodings", encoding),
             (b"Content-Type", content_type),
             (b"Content-Length", file_size),
             (b"Accept-Ranges", b"bytes"),
             (b"Last-Modified", last_modified),
-            (b"ETag", md5(file_size + last_modified).hexdigest().encode("utf-8")),
+            (b"ETag", etag),
         ]
 
         # send headers
@@ -122,12 +142,15 @@ class ASGIMiddlewareStaticFile:
                 "type": "http.response.start",
                 "status": 200,
                 "headers": headers,
+                "trailers": True,
             }
         )
         if is_head:
             await send(
                 {
                     "type": "http.response.body",
+                    "body": b"",
+                    "more_body": False,
                 }
             )
 
@@ -149,7 +172,7 @@ class ASGIMiddlewareStaticFile:
 
         return
 
-    async def locate_the_file(self, sub_path: PathLike | str) -> str | None:
+    async def locate_the_file(self, sub_path: Path | str) -> str | None:
         """location the file in self.static_root_paths"""
         for root_path in self.static_root_paths:
             abs_path = root_path.join_path(sub_path)
@@ -163,13 +186,14 @@ class ASGIMiddlewareStaticFile:
 
     @staticmethod
     async def send_response_in_one_call(
-        send: Callable, status: int, message: bytes
+        send: ASGISendCallable, status: int, message: bytes
     ) -> None:
         await send(
             {
                 "type": "http.response.start",
                 "status": status,
                 "headers": [(b"Content-Type", b"text/plain; UTF-8")],
+                "trailers": True,
             }
         )
 
@@ -177,6 +201,7 @@ class ASGIMiddlewareStaticFile:
             {
                 "type": "http.response.body",
                 "body": message,
+                "more_body": False,
             }
         )
         return

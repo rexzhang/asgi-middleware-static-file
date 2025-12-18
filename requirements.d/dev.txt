@@ -1,10 +1,10 @@
 -r base.txt
+-r mypy.txt
 -r test.txt
 -r pypi.txt
 
 pre-commit
 
-asgiref
 uvicorn
 django
 quart

@@ -1,1 +1,1 @@
-recursive-include requirements *.txt
+include asgi_middleware_static_file/py.typed

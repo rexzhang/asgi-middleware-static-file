@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-
-
 from .core import ASGIMiddlewarePath, ASGIMiddlewareStaticFile  # noqa: F401
 
-VERSION = "0.6.2"
+__version__ = "0.6.2"
+__all__ = ["ASGIMiddlewarePath", "ASGIMiddlewareStaticFile"]

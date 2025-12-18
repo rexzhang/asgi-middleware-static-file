@@ -1,1 +1,2 @@
-aiofiles>=23.2.1
+aiofiles>=25.1.0
+asgiref
