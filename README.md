@@ -134,9 +134,13 @@ pip install -U -e ".[dev]"
 
 ## History
 
-### Next
+### 0.7.0
 
 - chore: Drop Python 3.7/3.8/3.9 support <https://www.python.org/downloads/release/python-3925/>
+- feat: Add type hints and mypy support
+- feat: Add Python 3.13 compatibility for mimetypes
+- refactor: Move requirements files into pyproject.toml
+- test: 100% coverage!
 
 ### 0.6.2 - 20251112
 
