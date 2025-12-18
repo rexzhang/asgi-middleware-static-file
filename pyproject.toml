@@ -9,14 +9,11 @@ build-backend = "setuptools.build_meta"
 name = "ASGIMiddlewareStaticFile"
 description = "ASGI Middleware for serving Static File."
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 license-files = ["LICENSE"]
 authors = [{ name = "Rex Zhang" }, { email = "rex.zhang@gmail.com" }]
 keywords = ["staticfile", "middleware", "asgi", "asyncio"]
-classifiers = [
-    "Development Status :: 4 - Beta",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-]
+classifiers = ["Development Status :: 4 - Beta", "Topic :: Software Development :: Libraries :: Python Modules"]
 
 dynamic = ["version", "dependencies"]
 

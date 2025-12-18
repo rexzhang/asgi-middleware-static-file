@@ -107,7 +107,7 @@ DEMO                                   100%[====================================
 
 #### Start Server
 
-```
+```shell
 (venv) ➜  example git:(main) ✗ uvicorn example_wsgi_app:app
 ```
 
@@ -127,6 +127,10 @@ application = ASGIMiddlewareStaticFile(
 ```
 
 ## History
+
+### Next
+
+- chore: Drop Python 3.7/3.8/3.9 support <https://www.python.org/downloads/release/python-3925/>
 
 ### 0.6.2 - 20251112
 

@@ -1,10 +1,10 @@
 import mimetypes
 import os
+from collections.abc import Callable
 from datetime import datetime
 from hashlib import md5
 from os import PathLike
 from pathlib import Path
-from typing import Callable, List, Optional, Union
 
 import aiofiles
 import aiofiles.os
@@ -14,7 +14,7 @@ _FILE_BLOCK_SIZE = 64 * 1024
 
 
 class ASGIMiddlewarePath:
-    def __init__(self, path: Union[PathLike, str]):
+    def __init__(self, path: PathLike | str):
         if not isinstance(path, Path):
             path = Path(path)
 
@@ -23,7 +23,7 @@ class ASGIMiddlewarePath:
         self.parts = self.path.parts
         self.count = len(self.parts)
 
-    def join_path(self, path: Union[PathLike, str]) -> "ASGIMiddlewarePath":
+    def join_path(self, path: PathLike | str) -> "ASGIMiddlewarePath":
         return ASGIMiddlewarePath(self.path.joinpath(path))
 
     def startswith(self, path: "ASGIMiddlewarePath") -> bool:
@@ -40,7 +40,7 @@ class ASGIMiddlewarePath:
 
 class ASGIMiddlewareStaticFile:
     def __init__(
-        self, app, static_url: str, static_root_paths: List[Union[PathLike, str]]
+        self, app, static_url: str, static_root_paths: list[PathLike | str]
     ) -> None:
         self.app = app
 
@@ -149,7 +149,7 @@ class ASGIMiddlewareStaticFile:
 
         return
 
-    async def locate_the_file(self, sub_path: Union[PathLike, str]) -> Optional[str]:
+    async def locate_the_file(self, sub_path: PathLike | str) -> str | None:
         """location the file in self.static_root_paths"""
         for root_path in self.static_root_paths:
             abs_path = root_path.join_path(sub_path)
