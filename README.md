@@ -5,6 +5,7 @@
 ![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https://raw.githubusercontent.com/rexzhang/asgi-middleware-static-file/main/pyproject.toml)
 ![Pytest Workflow Status](https://github.com/rexzhang/asgi-middleware-static-file/actions/workflows/check-pytest.yaml/badge.svg)
 [![codecov](https://codecov.io/gh/rexzhang/asgi-middleware-static-file/branch/main/graph/badge.svg?token=083O4RHEZE)](https://codecov.io/gh/rexzhang/asgi-middleware-static-file)
+[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/ASGIMiddlewareStaticFile)
 
@@ -134,9 +135,9 @@ pip install -U -e ".[dev]"
 
 ## History
 
-### 0.7.0
+### 0.7.0 - 20251218
 
-- chore: Drop Python 3.7/3.8/3.9 support <https://www.python.org/downloads/release/python-3925/>
+- chore: Drop Python 3.7/3.8/[3.9](https://www.python.org/downloads/release/python-3925/) support. If you require it, please use version 0.6.2
 - feat: Add type hints and mypy support
 - feat: Add Python 3.13 compatibility for mimetypes
 - refactor: Move requirements files into pyproject.toml
